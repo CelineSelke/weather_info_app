@@ -38,6 +38,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  String userInput = '';
+  final TextEditingController _controller = TextEditingController();
+
+  void updateText() {
+    setState(() {
+    userInput = _controller.text; // Update the user input variable
+    });
+  }
+
+
   int temp = 0; 
   var condition = '';
 
@@ -73,13 +83,41 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
       
-            Text(
-              'Enter City Name:',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Center(
+              child: SizedBox(
+                width: 200.0,
+                child: TextField(
+                  controller: _controller, 
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 10.0,
+                    ),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter city here: ',
+                  ),
+                ),
+              ),
             ),
-            ElevatedButton(onPressed: () => checkWeather(), child: Text('Fetch Weather')),
-            Text('Temperature: $temp degrees'),
-            Text('Condition: $condition'),
+
+            ElevatedButton(
+              onPressed: () {
+                updateText();
+                checkWeather();
+              },
+              child: const Text('Fetch Weather'),
+            ),
+
+            SizedBox(
+              width: 300,
+              child: Column(
+                children: [
+                  Text('City: $userInput', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Temperature: $temp degrees'),
+                  Text('Condition: $condition'),
+                ],
+              ),
+            ),
           ],
 
         ),
